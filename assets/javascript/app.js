@@ -40,12 +40,13 @@ function buildGamePage (){
   // Starts stopwatch
   stopwatch.start();
 
-  // Builds Line Break for spacing
+  
+  
   
 
   // Builds Question 1, Question 2, Question 3, Question 4
-
-  for (i = 0; i < 2; i++){
+  for (i = 0; i < 2; i++) {
+    // Builds Line Break for spacing
     var lineBreak = $("<br>");
     var question = $("<div>");
     question.html(trivia[i].question);
@@ -53,15 +54,22 @@ function buildGamePage (){
     $("#main-content").append(lineBreak);
   }
 
+  $('#main-content').append("<form><p>Please select your preferred contact method:</p><div><input type='radio' id='contactChoice1' name='contact' value='email'><label for='contactChoice1'>Email</label>    <input type='radio' id='contactChoice2'           name='contact' value='phone'>    <label for='contactChoice2'>Phone</label>    <input type='radio' id='contactChoice3'           name='contact' value='mail'>    <label for='contactChoice3'>Mail</label>  </div>  <div>    <button type='submit'>Submit</button>  </div></form>");
 
-  // var question1 = $("<div>");
-  // var question2 = $("<div>");
-  // var question3 = $("<div>");
-  // var question4 = $("<div>");
-
-  // question1.html(trivia)
-
-
+  var form = document.querySelector("form");
+  
+  
+  form.addEventListener("submit", function(event) {
+    var data = new FormData(form);
+    console.log(data);
+    var output = "";
+    for (const entry of data) {
+      output = entry[0] + "=" + entry[1] + "\r";
+    };
+    console.log(data);
+    console.log(output);
+    event.preventDefault();
+  }, false);
 }
 
 
