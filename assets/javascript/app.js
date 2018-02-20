@@ -17,11 +17,11 @@ var clockRunning = false;
 // jQuery object for start button
 var startButton = $("<button>");
 
-$(document).ready(function() {
+// $(document).ready(function() {
 
-  $("#main-content").html(startButton.text("Start"));
+//   $("#main-content").append(startButton.text("Start"));
 
-});
+// });
 
 // Function for start button
 $(startButton).on("click", function(){
