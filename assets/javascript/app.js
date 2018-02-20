@@ -17,15 +17,22 @@ var clockRunning = false;
 // jQuery object for start button
 var startButton = $("<button>");
 
-// $(document).ready(function() {
+$(document).ready(function() {
 
-//   $("#main-content").append(startButton.text("Start"));
-
-// });
+  $("#main-content").append(startButton.text("Start"));
+  $("#row1").hide();
+  $("#row2").hide();
+  $("#row3").hide();
+  $("#row4").hide();
+});
 
 // Function for start button
 $(startButton).on("click", function(){
   
+  // $("#main-content").empty();
+  // $("#row1").show();
+
+
   buildGamePage();
 
 });
@@ -35,7 +42,10 @@ function buildGamePage (){
 
   // Clears contents so i can push new data
   $('#main-content').empty();
-
+  $("#row1").show();
+  $("#row2").show();
+  $("#row3").show();
+  $("#row4").show();
   // build variable for timer and add to next page
   var timerObj = $("<div>");
   timerObj.attr("id", "timer");
@@ -137,9 +147,10 @@ var stopwatch = {
     start: function() {
   
         //  TODO: Use setInterval to start the count here and set the clock to running.
-          intervalId = setInterval(stopwatch.count, 100);
+        if (!clockRunning) {  
+        intervalId = setInterval(stopwatch.count, 100);
           clockRunning = true;
-          
+        }
     },
 
     stop: function() {
