@@ -1,3 +1,7 @@
+// Variable for first answer
+
+var firstAnswer; 
+
 // Array for trivia questions
 var trivia = [{
   "question": "Which of the following was not a team that competed in teh MLG tournaments?",
@@ -40,7 +44,9 @@ function buildGamePage (){
   // Starts stopwatch
   stopwatch.start();
 
-  
+  // Build instructions for the user.
+  var instructions = $("<div id='instructions'>Select the correct answers before the timer runs out. If you run out of time your scores will be calculated ONLY off of the answers you have completed.</div></br>");
+  $('#main-content').append(instructions);
   
   
 
@@ -52,24 +58,49 @@ function buildGamePage (){
     question.html(trivia[i].question);
     $("#main-content").append(question);
     $("#main-content").append(lineBreak);
+    var answers = $("<form>");
+    // answers.append("<form id='trivia-questions" + i + "'> <div><input type='radio' id='contactChoice1' name='contact' value='" + trivia[i].possAnswers[0] + "'><label for='contactChoice1'>" + trivia[i].possAnswers[0] + "</label>    <input type='radio' id='contactChoice2'           name='contact' value='" + trivia[i].possAnswers[1] + "'>    <label for='contactChoice2'>" + trivia[i].possAnswers[1] + "</label>    <input type='radio' id='contactChoice3'           name='contact' value='" + trivia[i].possAnswers[2] + "'>    <label for='contactChoice3'>" + trivia[i].possAnswers[2] + "</label> <input type='radio' id='contactChoice4' name='contact' value='" + trivia[i].possAnswers[3] + "'><label for='contactChoice1'>" + trivia[i].possAnswers[3] + "</label> </div>  <div>    <button type='submit'>Submit</button>  </div></form>");
+    answers.attr("id", "trivia-question" + i);
+    answers.text("hello");
+
+    $("#main-content").append(answers);
+
+
   }
 
-  $('#main-content').append("<form><p>Please select your preferred contact method:</p><div><input type='radio' id='contactChoice1' name='contact' value='email'><label for='contactChoice1'>Email</label>    <input type='radio' id='contactChoice2'           name='contact' value='phone'>    <label for='contactChoice2'>Phone</label>    <input type='radio' id='contactChoice3'           name='contact' value='mail'>    <label for='contactChoice3'>Mail</label>  </div>  <div>    <button type='submit'>Submit</button>  </div></form>");
+  // $('#main-content').append("<form id='trivia-questions'><p>Please select your preferred contact method:</p><div><input type='radio' id='contactChoice1' name='contact' value='email'><label for='contactChoice1'>Email</label>    <input type='radio' id='contactChoice2'           name='contact' value='phone'>    <label for='contactChoice2'>Phone</label>    <input type='radio' id='contactChoice3'           name='contact' value='mail'>    <label for='contactChoice3'>Mail</label>  </div>  <div>    <button type='submit'>Submit</button>  </div></form>");
+
+  // var form = document.querySelector("form");
+  
+  
+  // form.addEventListener("submit", function(event) {
+  //   var data = new FormData(form);
+  //   // console.log(data);
+  //   var output = "";
+  //   for (const entry of data) {
+  //     output = entry[0] + "=" + entry[1] + "\r";
+  //   };
+  //   // console.log(data);
+  //   console.log(output);
+  //   event.preventDefault();
+  //   var q1 = $("#contactChoice1").val();
+
+  //   console.log(q1);
+  // }, false);
 
   var form = document.querySelector("form");
   
   
   form.addEventListener("submit", function(event) {
-    var data = new FormData(form);
-    console.log(data);
-    var output = "";
-    for (const entry of data) {
-      output = entry[0] + "=" + entry[1] + "\r";
-    };
-    console.log(data);
-    console.log(output);
-    event.preventDefault();
+      event.preventDefault();
+    buildEndPage();
   }, false);
+
+  $('#trivia-questions input').on('change', function() {
+    firstAnswer = ($('input[name=contact]:checked', '#trivia-questions').val()); 
+ });
+
+ 
 }
 
 
@@ -77,8 +108,10 @@ function buildGamePage (){
 
 // Function to build End Page
 function buildEndPage (){
-
-  $('#main-content').html("Testing for my purposes");
+  // $('#main-content').empty();
+  // $('#main-content').html("Testing for my purposes");
+  console.log("You have run out of time!");
+  console.log(firstAnswer);
 
 }
 
@@ -121,7 +154,7 @@ var stopwatch = {
       // Check to see if time is zero and if so stop the timer and send message
       if (stopwatch.time === 0){
         stopwatch.stop();
-        console.log("You have run out of time!");
+        buildEndPage();
       }else{
 
         stopwatch.time--;
