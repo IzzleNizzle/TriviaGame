@@ -9,6 +9,9 @@ var correct = 0;
 var incorrect = 0;
 var unanswered = 0;
 
+// Builds Line Break for spacing
+var lineBreak = $("<br>");
+
 // Array for trivia questions
 var trivia = [{
   "question": "Which of the following was not a team that competed in teh MLG tournaments?",
@@ -37,7 +40,7 @@ $(document).ready(function () {
   $("#row2").hide();
   $("#row3").hide();
   $("#row4").hide();
-  $("#row5").hide();
+  
 
 });
 
@@ -50,6 +53,8 @@ $(startButton).on("click", function () {
 
 // Function to build Trivia Game Page
 function buildGamePage() {
+  // Ensures content is cleared and game is ready to start again.
+  reset();
 
   // Clears contents so i can push new data
   $('#main-content').empty();
@@ -57,7 +62,7 @@ function buildGamePage() {
   $("#row2").show();
   $("#row3").show();
   $("#row4").show();
-  $("#row5").show();
+  
 
   // build variable for timer and add to next page
   var timerObj = $("<div>");
@@ -146,10 +151,19 @@ function buildEndPage() {
   $("#row2").hide();
   $("#row3").hide();
   $("#row4").hide();
-  $("#row5").hide();
+
   $("#main-content").text("Here are your results!");
   $("#row1").text("Correct Answers: " + correct + " Incorrect Answers: " + incorrect + " Unanswered Questions: " + unanswered);
 
+
+  // Prints out button to start game again
+  var resetButton = $("<button>");
+  resetButton.text("Play Again!");
+  resetButton.on("click", function () {
+    buildGamePage();
+  })
+  $("#row1").append(lineBreak);
+  $("#row1").append(resetButton);
 }
 
 
@@ -189,6 +203,23 @@ function processInput() {
   }
 }
 
+function reset() {
+  // Bring variables back to beginning stages
+  stopwatch.time = 90;
+  answer1 = null;
+  answer2 = null;
+  answer3 = null;
+  answer4 = null;
+  correct = 0;
+  incorrect = 0;
+  unanswered = 0;
+  // Clears the rows that will be used
+  $("#row1").empty();
+  $("#row2").empty();
+  $("#row3").empty();
+  $("#row4").empty();
+  $("#main-content").empty();
+}
 
 
 // Create a timer for the game to run by
