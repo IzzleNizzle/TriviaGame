@@ -1,5 +1,4 @@
-// Variable for first answer
-
+// Variable for answers
 var answer1 = null;
 var answer2 = null;
 var answer3 = null;
@@ -9,12 +8,6 @@ var answer4 = null;
 var correct = 0;
 var incorrect = 0;
 var unanswered = 0;
-
-// Variables for rows
-// var row1 = $("#row1");
-// var row2 = $("#row2");
-// var row3 = $("#row3");
-// var row4 = $("#row4");
 
 // Array for trivia questions
 var trivia = [{
@@ -44,15 +37,13 @@ $(document).ready(function () {
   $("#row2").hide();
   $("#row3").hide();
   $("#row4").hide();
+  $("#row5").hide();
+
 });
 
 // Function for start button
 $(startButton).on("click", function () {
-
-  // $("#main-content").empty();
-  // $("#row1").show();
-
-
+  // Function that starts all the game logic and prints to the screen
   buildGamePage();
 
 });
@@ -66,11 +57,12 @@ function buildGamePage() {
   $("#row2").show();
   $("#row3").show();
   $("#row4").show();
+  $("#row5").show();
+
   // build variable for timer and add to next page
   var timerObj = $("<div>");
   timerObj.attr("id", "timer");
   $('#main-content').prepend(timerObj);
-
   // Starts stopwatch
   stopwatch.start();
 
@@ -82,30 +74,31 @@ function buildGamePage() {
 
   // Builds Question 1, Question 2, Question 3, Question 4
   for (i = 0; i < 4; i++) {
+
     // Builds Line Break for spacing
     var lineBreak = $("<br>");
+    // Builds Questions from the array of objects
     var question = $("<div>");
     question.html(trivia[i].question);
     $("#row" + (i + 1)).append(question);
-    // $("#main-content").append(lineBreak);
 
-    // answers.append("<form id='trivia-questions" + i + "'> <div><input type='radio' id='contactChoice1' name='contact' value='" + trivia[i].possAnswers[0] + "'><label for='contactChoice1'>" + trivia[i].possAnswers[0] + "</label>    <input type='radio' id='contactChoice2'           name='contact' value='" + trivia[i].possAnswers[1] + "'>    <label for='contactChoice2'>" + trivia[i].possAnswers[1] + "</label>    <input type='radio' id='contactChoice3'           name='contact' value='" + trivia[i].possAnswers[2] + "'>    <label for='contactChoice3'>" + trivia[i].possAnswers[2] + "</label> <input type='radio' id='contactChoice4' name='contact' value='" + trivia[i].possAnswers[3] + "'><label for='contactChoice1'>" + trivia[i].possAnswers[3] + "</label> </div>  <div>    <button type='submit'>Submit</button>  </div></form>");
 
-    // $("#row" + (i + 1)).append("<div>");
+    // Creates rows for forms to be stored in
     var divRow = $("<div class='test" + i + "'>");
     var answers = $("<form>");
     answers.attr("id", "trivia-question" + i);
 
+    // Creating 4 question bullet points
     for (j = 0; j < 4; j++) {
-      
+
       // answers.append("<div>");
       answers.append("<input type='radio' name='contact' value='" + trivia[i].possAnswers[j] + "'><label for='contactChoice" + j + "'>" + trivia[i].possAnswers[j] + "</label>");
 
-      
+
     }
+
+    // Appends answers to row and appends Row to the page
     divRow.append(answers);
-    // var startButton = $("<button type='submit'>Submit</button>");
-    // answers.append(startButton);
     $("#row" + (i + 1)).append(divRow);
   }
 
@@ -128,37 +121,14 @@ function buildGamePage() {
     answer4 = ($('input[name=contact]:checked', '#trivia-question3').val());
   });
 
-  // $('#main-content').append("<form id='trivia-questions'><p>Please select your preferred contact method:</p><div><input type='radio' id='contactChoice1' name='contact' value='email'><label for='contactChoice1'>Email</label>    <input type='radio' id='contactChoice2'           name='contact' value='phone'>    <label for='contactChoice2'>Phone</label>    <input type='radio' id='contactChoice3'           name='contact' value='mail'>    <label for='contactChoice3'>Mail</label>  </div>  <div>    <button type='submit'>Submit</button>  </div></form>");
-
-  // var form = document.querySelector("form");
-
-
-  // form.addEventListener("submit", function(event) {
-  //   var data = new FormData(form);
-  //   // console.log(data);
-  //   var output = "";
-  //   for (const entry of data) {
-  //     output = entry[0] + "=" + entry[1] + "\r";
-  //   };
-  //   // console.log(data);
-  //   console.log(output);
-  //   event.preventDefault();
-  //   var q1 = $("#contactChoice1").val();
-
-  //   console.log(q1);
-  // }, false);
-
-  
-  var form = document.querySelector("form");
-
-
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
+  // Button to stop the game
+  var endButton = $("<button>");
+  endButton.text("Submit All Answers");
+  endButton.on("click", function () {
     buildEndPage();
-  }, false);
-
-
-
+  })
+  $("#row4").append(lineBreak);
+  $("#row4").append(endButton);
 
 }
 
@@ -167,20 +137,16 @@ function buildGamePage() {
 
 // Function to build End Page
 function buildEndPage() {
-  // $('#main-content').empty();
-  // $('#main-content').html("Testing for my purposes");
-  console.log("You have run out of time!");
-  
-  console.log(answer1);
-  console.log(answer2);
-  console.log(answer3);
-  console.log(answer4);
+  //Function to calculate wins/losses
   processInput();
+
+  // Prints out results and gets rid of rows not needed
   $("#main-content").empty();
   $("#row1").empty();
   $("#row2").hide();
   $("#row3").hide();
   $("#row4").hide();
+  $("#row5").hide();
   $("#main-content").text("Here are your results!");
   $("#row1").text("Correct Answers: " + correct + " Incorrect Answers: " + incorrect + " Unanswered Questions: " + unanswered);
 
@@ -188,34 +154,37 @@ function buildEndPage() {
 
 
 function processInput() {
-  if (answer1 === "Space Scrapers"){
+
+  // Processes logic to see what answers are correct and not correct.
+
+  if (answer1 === "Space Scrapers") {
     correct++;
-  }else if(answer1 === null){
+  } else if (answer1 === null) {
     unanswered++;
-  }else{
+  } else {
     incorrect++;
   };
 
-  if (answer2 === "Bossman"){
+  if (answer2 === "Bossman") {
     correct++;
-  }else if(answer2 === null){
+  } else if (answer2 === null) {
     unanswered++;
-  }else{
+  } else {
     incorrect++;
   };
 
-  if (answer3 === "Onslaught"){
+  if (answer3 === "Onslaught") {
     correct++;
-  }else if(answer3 === null){
+  } else if (answer3 === null) {
     unanswered++;
-  }else{
+  } else {
     incorrect++;
   }
-  if (answer4 === "4"){
+  if (answer4 === "4") {
     correct++;
-  }else if(answer4 === null){
+  } else if (answer4 === null) {
     unanswered++;
-  }else{
+  } else {
     incorrect++;
   }
 }
@@ -240,8 +209,9 @@ var stopwatch = {
 
     //  TODO: Use setInterval to start the count here and set the clock to running.
     if (!clockRunning) {
-      intervalId = setInterval(stopwatch.count, 100);
+      intervalId = setInterval(stopwatch.count, 1000);
       clockRunning = true;
+      $('#timer').text("01:30");
     }
   },
 
@@ -291,9 +261,3 @@ var stopwatch = {
     return minutes + ":" + seconds;
   }
 };
-
-
-  // // Start timer for testing purposes
-  // stopwatch.start();
-
-
