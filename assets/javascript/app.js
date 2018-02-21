@@ -33,6 +33,7 @@ var clockRunning = false;
 // jQuery object for start button
 var startButton = $("<button>");
 
+// Document Ready function to get start button on page
 $(document).ready(function () {
 
   $("#main-content").append(startButton.text("Start"));
@@ -76,12 +77,9 @@ function buildGamePage() {
   $('#main-content').append(instructions);
 
 
-
   // Builds Question 1, Question 2, Question 3, Question 4
   for (i = 0; i < 4; i++) {
 
-    // Builds Line Break for spacing
-    var lineBreak = $("<br>");
     // Builds Questions from the array of objects
     var question = $("<div>");
     question.html(trivia[i].question);
@@ -98,7 +96,6 @@ function buildGamePage() {
 
       // answers.append("<div>");
       answers.append("<input type='radio' name='contact' value='" + trivia[i].possAnswers[j] + "'><label for='contactChoice" + j + "'>" + trivia[i].possAnswers[j] + "</label>");
-
 
     }
 
@@ -166,10 +163,8 @@ function buildEndPage() {
   $("#row1").append(resetButton);
 }
 
-
+// Processes logic to see what answers are correct and not correct.
 function processInput() {
-
-  // Processes logic to see what answers are correct and not correct.
 
   if (answer1 === "Space Scrapers") {
     correct++;
